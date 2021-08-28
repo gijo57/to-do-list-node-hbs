@@ -4,6 +4,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const Todo = require('./models/todo');
 const hbs = require('hbs');
+const nodeSass = require('node-sass-middleware');
 
 const app = express();
 
@@ -14,7 +15,15 @@ app.set('views', path.join(__dirname, 'views'));
 
 app.use(express.static('public'));
 app.use(express.urlencoded({ extended: true }));
-
+app.use(
+  nodeSass({
+    dest: path.join(__dirname, 'public/styles'),
+    src: path.join(__dirname, 'styles'),
+    force: true,
+    outputStyle: 'expanded',
+    prefix: '/styles'
+  })
+);
 app.get('/', (req, res, next) => {
   Todo.find().then((todos) => res.render('home', { todos }));
 });
