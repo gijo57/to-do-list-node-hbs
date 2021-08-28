@@ -5,6 +5,8 @@ const mongoose = require('mongoose');
 const Todo = require('./models/todo');
 const hbs = require('hbs');
 const nodeSass = require('node-sass-middleware');
+const serveFavicon = require('serve-favicon');
+const morgan = require('morgan');
 
 const app = express();
 
@@ -13,7 +15,9 @@ hbs.registerPartials(path.join(__dirname, 'views/partials'));
 app.set('view engine', 'hbs');
 app.set('views', path.join(__dirname, 'views'));
 
+app.use(serveFavicon(path.join(__dirname, 'public/favicon.ico')));
 app.use(express.static('public'));
+app.use(morgan('dev'));
 app.use(express.urlencoded({ extended: true }));
 app.use(
   nodeSass({
@@ -24,6 +28,7 @@ app.use(
     prefix: '/styles'
   })
 );
+
 app.get('/', (req, res, next) => {
   Todo.find().then((todos) => res.render('home', { todos }));
 });
