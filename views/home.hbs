@@ -4,7 +4,7 @@
     <span>(Click on task to update and confirm by clicking the "Update" button)</span></h2>
   <ul>
     {{#each todos}}
-      <li class='task-list-item'>
+      <li>
         <form method='POST' action='/{{_id}}/update'>
           <span class='taskitem'><span class='task'>{{task}}</span></span>
           <button>Update</button>
