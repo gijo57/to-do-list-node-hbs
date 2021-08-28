@@ -17,8 +17,6 @@ app.set('views', path.join(__dirname, 'views'));
 
 app.use(serveFavicon(path.join(__dirname, 'public/favicon.ico')));
 app.use(express.static('public'));
-app.use(morgan('dev'));
-app.use(express.urlencoded({ extended: true }));
 app.use(
   nodeSass({
     dest: path.join(__dirname, 'public/styles'),
@@ -28,6 +26,8 @@ app.use(
     prefix: '/styles'
   })
 );
+app.use(morgan('dev'));
+app.use(express.urlencoded({ extended: true }));
 
 app.get('/', (req, res, next) => {
   Todo.find().then((todos) => res.render('home', { todos }));
@@ -40,7 +40,6 @@ app.post('/create-to-do-list-item', (req, res) => {
       return Todo.find();
     })
     .then((todos) => {
-      console.log(todos);
       res.redirect('/');
     });
 });
